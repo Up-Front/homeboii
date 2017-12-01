@@ -41,11 +41,14 @@ export class Router {
     this.routes[route.uri] = route;
     this.logger.log(`client registered route ${route.uri}`);
 
-    this.machine.subscribe(route.uri, (request) => {
+    const handler = (request) => {
       const requestObject = this.createRequestObject(route, request);
       if (Controller.constructor) return new Controller(requestObject);
       Controller(requestObject);
-    });
+    };
+
+    socket.on(route.uri, (req) => handler(req));
+    this.machine.subscribe(route.topic, (message) => handler(message));
   }
 
   /**
