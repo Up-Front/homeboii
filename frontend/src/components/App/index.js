@@ -18,12 +18,14 @@ export class App extends Component {
       conn.on('weather/location', data => {
         console.log('weather/location', data)
         window.navigator.geolocation.getCurrentPosition(res => {
-          const { coords } = res
+          const { latitude, longitude } = res.coords
+          const coords = { latitude, longitude }
           console.log('sending', coords)
-          conn.emit('weather/today', coords)
+          conn.emit('weather/today', coords, ack => console.log(ack))
         })
       })
-      conn.on('weather/today', (weather) => { 
+      conn.on('weather/today', (weather) => {
+        console.log('weather/today', weather)
         this.setState({ weather })
       })
       conn.on("connect", () => {
