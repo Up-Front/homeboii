@@ -11,32 +11,24 @@ export class App extends Component {
     constructor() {
         super();
         this.state = {
-            weather: {
-              temperature: 0,
-              humidity: 0,
-              windSpeed: 0,
-              main: 'main',
-              description: 'description',
-              icon: '',
-              city: 'Utrecht',
-            },
+            weather: null,
             screen: 'main'
         }
     }
 
     componentDidMount() {
       const conn = io('http://192.168.1.46:3000');
+      window.navigator.geolocation.getCurrentPosition(res => {
+        const { latitude, longitude } = res.coords
+        const coords = { latitude, longitude }
+        console.log('sending', coords)
+        conn.emit('weather/today', coords, ack => console.log(ack))
+      })
       conn.on('homeboii/listening', data => {
         console.log('listening', data)
       })
       conn.on('weather/location', data => {
         console.log('weather/location', data)
-        window.navigator.geolocation.getCurrentPosition(res => {
-          const { latitude, longitude } = res.coords
-          const coords = { latitude, longitude }
-          console.log('sending', coords)
-          conn.emit('weather/today', coords, ack => console.log(ack))
-        })
       })
       conn.on('weather/today', (weather) => {
         console.log('weather/today', weather)
@@ -87,7 +79,7 @@ export class App extends Component {
             <div className="main">
               <div className="main-row">
                 <div className="main-top-left">
-                  <WeatherToday weather={weather} />
+                 { weather && <WeatherToday weather={weather} /> }
                 </div>
                 <div className="main-top-right">
                   TR

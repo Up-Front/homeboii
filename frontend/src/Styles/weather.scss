@@ -5,7 +5,6 @@ html *:after { box-sizing: inherit; }
 
 body {
   margin: 0 auto;
-  text-align: center;
 }
 
 .icon {
@@ -15,9 +14,6 @@ body {
   width: 12em;
   height: 10em;
   font-size: 1em; /* control icon size here */
-
-  //
-  right: 28px;
 }
 
 .cloud {
