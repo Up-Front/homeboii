@@ -11,13 +11,24 @@ export class App extends Component {
     constructor() {
         super();
         this.state = {
-            weather: {},
+            weather: {
+              temperature: 0,
+              humidity: 0,
+              windSpeed: 0,
+              main: 'main',
+              description: 'description',
+              icon: '',
+              city: 'Utrecht',
+            },
             screen: 'main'
         }
     }
 
     componentDidMount() {
       const conn = io('http://192.168.1.46:3000');
+      conn.on('homeboii/listening', data => {
+        console.log('listening', data)
+      })
       conn.on('weather/location', data => {
         console.log('weather/location', data)
         window.navigator.geolocation.getCurrentPosition(res => {
