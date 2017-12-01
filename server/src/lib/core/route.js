@@ -1,4 +1,5 @@
 import { Logger } from '../helpers/index';
+import config from '../../config';
 
 /**
  * @name Route
@@ -17,6 +18,7 @@ export class Route {
     this.route = request.route;
     this.request = request.body || {};
     this.client = request.client;
+    this.config = config;
     this.logger = new Logger(`route/${this.route.uri}/`);
   }
 

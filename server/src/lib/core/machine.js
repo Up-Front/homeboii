@@ -20,6 +20,9 @@ export class MachineListener {
 
   subscribe(event, handler) {
     this.machine.subscribe(event, handler);
+
+    //test
+    if (event === 'weather/today') return handler({ test: true });
   }
 
   publish(event, payload) {

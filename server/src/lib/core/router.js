@@ -1,5 +1,6 @@
 import { Logger } from '../helpers';
 import modules from '../../modules';
+import { MachineListener } from './machine';
 
 /**
  * @name Router
@@ -20,6 +21,7 @@ export class Router {
     this.socket = client.socket;
     this.logger = new Logger(`client/${client.uid}/router/`);
     this.routes = {};
+    this.machine = new MachineListener();
 
     modules.forEach(module => (
       module.Routes.forEach(route => this.register(route))
@@ -39,8 +41,8 @@ export class Router {
     this.routes[route.uri] = route;
     this.logger.log(`client registered route ${route.uri}`);
 
-    socket.on(route.uri, (req) => {
-      const requestObject = this.createRequestObject(route, req);
+    this.machine.subscribe(route.uri, (request) => {
+      const requestObject = this.createRequestObject(route, request);
       if (Controller.constructor) return new Controller(requestObject);
       Controller(requestObject);
     });
