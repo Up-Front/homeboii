@@ -1,5 +1,6 @@
 import mqtt from 'mqtt';
 import config from '../../config/index';
+import { Logger } from '../helpers';
 
 /**
  * @name MachineListener
@@ -14,15 +15,29 @@ export class MachineListener {
    * Connect to the MQTT server given by the config settings.
    */
   constructor() {
+    this.logger = new Logger(`machine/listener/`);
     this.config = config.machine;
+    this.events = {};
     this.machine = mqtt.connect(this.config.url);
+
+    this.machine.on('connect', () => {
+      this.machine.subscribe('hermes/hotword/#');
+    });
+
+    this.machine.on('message', (topic, message) => {
+      const event = this.events[topic];
+      if (!event) return this.logger.log(`event handling failed for ${topic}`);
+
+      this.logger.log(`event received for ${topic} with ${message}`);
+
+      event(message.toString());
+    });
   }
 
   subscribe(event, handler) {
-    this.machine.subscribe(event, handler);
+    if (!event || !handler) return false;
 
-    //test
-    if (event === 'weather/today') return handler({ test: true });
+    this.events[event] = handler;
   }
 
   publish(event, payload) {
