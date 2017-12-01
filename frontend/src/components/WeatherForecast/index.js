@@ -1,5 +1,10 @@
 import React from "react";
 
-export function WeatherForecast() {
-    return <span>WeatherForecast</span>;
+export function WeatherForecast({ weather }) {
+  console.log(weather);
+  return (
+    <div>
+      <span>WeatherForecast</span>
+    </div>
+  );
 }
