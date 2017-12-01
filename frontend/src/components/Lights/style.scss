@@ -1,0 +1,36 @@
+$d: 16em;
+
+@function stop-list($precision: 12) {
+	$list: ();
+	$unit: 360/$precision;
+	
+	@for $i from 0 through $precision {
+		$list: $list, hsl($i*$unit, 100%, 80%);
+	}
+	
+	@return $list;
+}
+
+.spinner {
+	&, &:before {
+    z-index: 99999;
+		position: absolute;
+		margin: -.5*$d;
+		width: $d; height: $d;
+		top: 50%; left: 50%;
+		border-radius: 50%;
+	}
+	
+	box-sizing: border-box;
+	border: solid .75em transparent;
+	background: #000000 50%/ cover padding-box;
+	
+	&:before {
+		z-index: -1;
+		background: conic-gradient(stop-list());
+		animation: r 2s linear infinite;
+		content: '';
+	}
+}
+
+@keyframes r { to { transform: rotate(1turn); } }

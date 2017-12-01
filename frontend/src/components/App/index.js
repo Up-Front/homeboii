@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 import { WeatherToday} from '../WeatherToday';
 import { WeatherForecast } from '../WeatherForecast';
+import { Lights } from '../Lights'
 
 import io from 'socket.io-client';
 
@@ -12,7 +13,8 @@ export class App extends Component {
         super();
         this.state = {
             weather: null,
-            screen: 'main'
+            screen: 'main',
+            listening: true
         }
     }
 
@@ -26,6 +28,7 @@ export class App extends Component {
       })
       conn.on('homeboii/listening', data => {
         console.log('listening', data)
+        this.setState({ listening: true })
       })
       conn.on('weather/location', data => {
         console.log('weather/location', data)
@@ -72,7 +75,8 @@ export class App extends Component {
     }
 
     render() {
-        const { weather } = this.state;
+        const { weather, listening } = this.state;
+        console.log('listening', listening)
 
         if (this.state.screen === 'main') {
           return (
@@ -88,6 +92,9 @@ export class App extends Component {
               <div className="main-row">
                 <div className="main-bottom-left">
                   BL
+                </div>
+                <div className="main-bottom-center">
+                  { listening && <Lights /> }
                 </div>
                 <div className="main-bottom-right">
                   BR
