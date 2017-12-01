@@ -15,9 +15,11 @@ export class App extends Component {
 
     componentDidMount() {
       const conn = io('http://192.168.1.46:3000');
-      conn.on('weather/location', res => {
+      conn.on('weather/location', data => {
+        console.log('weather/location', data)
         window.navigator.geolocation.getCurrentPosition(res => {
           const { coords } = res
+          console.log('sending', coords)
           conn.emit('weather/today', coords)
         })
       })
