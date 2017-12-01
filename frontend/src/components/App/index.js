@@ -5,11 +5,14 @@ import { WeatherForecast } from '../WeatherForecast';
 
 import io from 'socket.io-client';
 
+import './style.scss'
+
 export class App extends Component {
     constructor() {
         super();
         this.state = {
             weather: {},
+            screen: 'main'
         }
     }
 
@@ -68,9 +71,42 @@ export class App extends Component {
     render() {
         const { weather } = this.state;
 
-        return <div>
-            <WeatherToday weather={weather} />
-            <WeatherForecast weather={weather} />
-        </div>;
+        if (this.state.screen === 'main') {
+          return (
+            <div className="main">
+              <div className="main-row">
+                <div className="main-top-left">
+                  <WeatherToday weather={weather} />
+                </div>
+                <div className="main-top-right">
+                  TR
+                </div>
+              </div>
+              <div className="main-row">
+                <div className="main-bottom-left">
+                  BL
+                </div>
+                <div className="main-bottom-right">
+                  BR
+                </div>
+              </div>
+            </div>
+          )
+        }
+
+        if (screen === 'forecast') {
+          return (
+            <div className="padded">
+              <WeatherForecast weather={weather} />
+            </div>
+          )
+        }
+
+        return (
+          <div>
+              <WeatherToday weather={weather} />
+              <WeatherForecast weather={weather} />
+          </div>
+        );
     }
 }

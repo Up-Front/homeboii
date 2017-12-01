@@ -1,0 +1,17 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.main-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 15px;
+}
+
+.padded {
+  padding: 15px;
+}

@@ -1,5 +1,11 @@
-import React from "react";
+import React, { PureComponent } from "react";
 
-export function WeatherToday() {
-  return <span>WeatherToday</span>;
+export class WeatherToday extends PureComponent {
+  render() {
+    return (
+      <div>
+        Weather Today
+      </div>
+    )
+  }
 }
