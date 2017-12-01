@@ -1,0 +1,36 @@
+<html>
+  <head>
+
+  </head>
+  <body>
+    <h1 id="device"></h1>
+    <div id="claimcode"></div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      var socket = io();
+      var credentials;
+      var device;
+      var client;
+      var token;
+
+      socket.on('device/login', function(response) {
+        token = response;
+        document.querySelector('#device').innerHTML = device._id;
+      });
+
+      socket.on('client/register', function (response) {
+        client = response;
+        socket.emit('device/register');
+      });
+
+      socket.on('device/register', function (response) {
+        device = response;
+        credentials = device;
+        socket.emit('device/login', credentials);
+      });
+
+
+    </script>
+  </body>
+</html>
