@@ -26,9 +26,7 @@ export class MachineListener {
 
     this.machine.on('message', (topic, message) => {
       const event = this.events[topic];
-      if (!event) return this.logger.log(`event handling failed for ${topic}`);
-
-      this.logger.log(`event received for ${topic} with ${message}`);
+      if (!event) return;
 
       event(message.toString());
     });
